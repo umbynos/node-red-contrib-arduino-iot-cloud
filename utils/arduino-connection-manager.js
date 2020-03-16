@@ -23,8 +23,8 @@ const ArduinoClientMqtt = require('../arduino-iot-client-mqtt/arduino-iot-client
 const accessTokenUri = process.env.NODE_RED_ACCESS_TOKEN_URI || 'https://api2.arduino.cc/iot/v1/clients/token';
 const accessTokenAudience = process.env.NODE_RED_ACCESS_TOKEN_AUDIENCE || 'https://api2.arduino.cc/iot';
 const arduinoIotCloudHost = process.env.NODE_RED_MQTT_HOST || 'wss.iot.arduino.cc';
-const clientZId = process.env.ARDUINO_API_CLIENT_ID || connectionConfig.credentials.clientid;
-const clientSecret = process.env.ARDUINO_API_CLIENT_SECRET || connectionConfig.credentials.clientsecret;
+const clientId = process.env.ARDUINO_API_CLIENT_ID;
+const clientSecret = process.env.ARDUINO_API_CLIENT_SECRET;
 const Mutex = require('async-mutex').Mutex;
 /** Connections elem struct
  * {
@@ -48,8 +48,8 @@ async function getToken(connectionConfig) {
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     data: {
       grant_type: 'client_credentials',
-      client_id: clientId,
-      client_secret: clientSecret,
+      client_id: clientId || connectionConfig.credentials.clientid,
+      client_secret: clientSecret || connectionConfig.credentials.clientsecret,
       audience: accessTokenAudience
     }
   };
